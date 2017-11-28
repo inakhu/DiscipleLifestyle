@@ -1,0 +1,68 @@
+<ion-view cache-view="false" view-title="Disciple's Lifestyle 2018" name="dashboard-view">
+
+	<div class="bar bar-subheader" style="padding: 20px">
+		<div class="title" style="margin-top: 5px;"><span ng-if="weekNumber>1"><button ng-click="previous()" class="button button-calm ion-ios-rewind"></button></span>
+			<button class="button button-light"> Week {{weekNumber}}</button>
+			<span ng-if="weekNumber<52"><button ng-click="next()" class="button  button-calm ion-ios-fastforward"> </button></span>
+		</div>
+	</div>
+
+	<ion-pane  style="background-color: #FFF">
+
+		<ion-content scroll="true" ng-class="fontSize" class="has-subheader">
+			<section>
+				<div class="row col padding">
+					<!--<h4 style="text-transform: capitalize; text-align: center">{{current.title}}</h4>-->
+					<p style=" line-height:25px; padding: 5px 15px 5px 15px;" ng-bind-html="current.message"></p>
+					<p style="padding: 5px 15px 20px 15px;"></p>
+				</div>
+			</section>
+		</ion-content>
+
+		<script id = "popover.html" type = "text/ng-template">
+			<ion-popover-view>
+				<ion-header-bar>
+					<h1 class = "title">Glossary</h1>
+				</ion-header-bar>
+				<ion-content>
+					<div class="row">
+						<div class="col padding text-center">
+							<a class=" button icon ion-ios-calendar button-assertive" ion-datetime-picker date ng-model="row.appDate"> Pick a Date</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col padding text-center">
+							<strong>{{row.appDate|date:"MMMM dd, yyyy"}}</strong>
+						</div>
+					</div>
+					<div ng-if="row.appDate" class="row">
+						<div class="col padding text-center">
+							<a class="button ion-search button-calm" href="#/app/dashboard/{{row.appDate| date: 'yyyy-MM-dd'}}"> Preview </a>
+						</div>
+					</div>
+				</ion-content>
+
+			</ion-popover-view>
+		</script>
+
+
+
+	</ion-pane>
+
+	<div class="tabs-striped tabs-color-light tabs-background-calm" style="padding: 0">
+		<div class="tabs">
+			<a class="tab-item " ng-click="openPopover($event)">
+				<i class="icon ion-ios-calendar-outline" style="color: white"></i>
+				Grossary
+			</a>
+			<a class="tab-item"  ng-click="decrease()" style="color: white">
+				<i class="icon ion-minus-round"></i>
+				Decrease
+			</a>
+			<a class="tab-item" ng-click="increase()" style="color: white">
+				<i class="icon ion-plus-round"></i>
+				Increase
+			</a>
+		</div>
+	</div>
+</ion-view>

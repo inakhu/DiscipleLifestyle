@@ -1,0 +1,53 @@
+<ion-side-menus expose-aside-when="xlarge">
+
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-calm">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-content class="custom">
+      <ion-list>
+        <ion-item class="heading-item item item-avatar header-bg" nav-clear menu-close ui-sref="app.profile" >
+
+          <p><img class="user-image" ng-src="app/assets/images/icon.png" spinner-on-load></p>
+
+
+          <h2 class="text-center">Baptist Convention</h2>
+          <p class="text-center">Disciple's Lifestyle 2018</p>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.dashboard">
+          <i class="icon ion-ios-calendar-outline"></i>
+          <h2 class="menu-text">Dashboard</h2>
+        </ion-item>
+        <ion-item>
+          <h2 class="text-left">About Us</h2>
+          <p>This app was prepared and produced <br>by the Publications Department, <br>Nigerian Baptist Convention, <br>P.M.B, 5113, Ibadan, <br>Oyo State, Nigeria.<br><br>Copyright 2018. <br> All Rights Reserved.</p>
+        </ion-item>
+       <!--
+       <ion-item class="item-icon-left" nav-clear menu-close href="#/app/dashboard/lang/english">
+          <h2 class="menu-text text-center">About Us</h2>
+        </ion-item>
+       <ion-item class="item-icon-left" nav-clear menu-close href="#/app/dashboard/yoruba">
+          <i class="icon ion-medkit"></i>
+          <h2 class="menu-text">Yoruba</h2>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close href="#/app/dashboard/hausa">
+          <i class="icon ion-medkit"></i>
+          <h2 class="menu-text">Hausa</h2>
+        </ion-item>-->
+
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+
+</ion-side-menus>
