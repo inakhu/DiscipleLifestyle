@@ -66,87 +66,63 @@ app.service('FeedList', function ($rootScope, FeedLoader, $q){
   };
 });
 
-// BOOKMARKS FUNCTIONS
-app.service('BookMarkService', function (_, $rootScope){
+//NotePad Factory Start===============================
+app.factory('Todos', function($localStorage, $rootScope, $stateParams) {
+    var Todos = $localStorage.todos;
 
-  this.bookmarkFeedPost = function(bookmark_post){
-
-    var user_bookmarks = !_.isUndefined(window.localStorage.ionFullApp_feed_bookmarks) ?
-        JSON.parse(window.localStorage.ionFullApp_feed_bookmarks) : [];
-
-    //check if this post is already saved
-
-    var existing_post = _.find(user_bookmarks, function(post){ return post.link == bookmark_post.link; });
-
-    if(!existing_post){
-      user_bookmarks.push({
-        link: bookmark_post.link,
-        title : bookmark_post.title,
-        date: bookmark_post.publishedDate,
-        excerpt: bookmark_post.contentSnippet
-      });
+    return{
+        all: function(){
+            return Todos;
+        },
+        one: function(id){
+            var alltodos = Todos;
+            var todo = _.first(_.filter(alltodos, {'id': id}));
+            return todo;
+        },
+        saveList: function(list){
+            list.id = $rootScope.randomId();
+            Todos.push(list);
+        },
+        removeList: function(list) {
+            Todos.splice(Todos.indexOf(list), 1);
+        },
+        saveTodo: function(id, todo){
+            var lists = Todos;
+            var list = _.first(_.filter(lists, {'id': id}));
+            list.todos.push(todo);
+        },
+        isDone: function(idList, idTodo){
+            var list = this.one(idList);
+            var todo = _.first(_.filter(list.todos, {'id': idTodo}));
+            console.log(list.todos);
+            console.log(idTodo);
+            console.log(todo);
+        }
     }
-
-    window.localStorage.ionFullApp_feed_bookmarks = JSON.stringify(user_bookmarks);
-    $rootScope.$broadcast("new-bookmark");
-  };
-
-  this.bookmarkWordpressPost = function(bookmark_post){
-
-    var user_bookmarks = !_.isUndefined(window.localStorage.ionFullApp_wordpress_bookmarks) ?
-        JSON.parse(window.localStorage.ionFullApp_wordpress_bookmarks) : [];
-
-    //check if this post is already saved
-
-    var existing_post = _.find(user_bookmarks, function(post){ return post.id == bookmark_post.id; });
-
-    if(!existing_post){
-      user_bookmarks.push({
-        id: bookmark_post.id,
-        title : bookmark_post.title,
-        date: bookmark_post.date,
-        excerpt: bookmark_post.excerpt
-      });
-    }
-
-    window.localStorage.ionFullApp_wordpress_bookmarks = JSON.stringify(user_bookmarks);
-    $rootScope.$broadcast("new-bookmark");
-  };
-
-  this.getBookmarks = function(){
-    return {
-      feeds : JSON.parse(window.localStorage.ionFullApp_feed_bookmarks || '[]'),
-      wordpress: JSON.parse(window.localStorage.ionFullApp_wordpress_bookmarks || '[]')
-    };
-  };
 });
+app.factory('Notes', function($localStorage, $rootScope, $stateParams) {
+    var Notes = $localStorage.notes;
+    return{
+        all: function(){
+            return Notes;
+        },
+        one: function(id){
+            var allnotes = Notes;
+            var note = _.first(_.filter(allnotes, {'id': id}));
+            return note;
+        },
+        addNote: function(note){
+            note.id = $rootScope.randomId();
+            Notes.push(note);
+        },
+        removeNote: function(note) {
+            Notes.splice(Notes.indexOf(note), 1);
+        },
+        updateNote: function(note){
+            Notes.splice(Notes.indexOf(note), 1);
+            Notes.splice(Notes.indexOf(note), 0, note);
 
-app.filter('htstogo', function() {
-  return function(millseconds) {
-    var oneSecond = 1; //or millsecon=1000
-    var oneMinute = oneSecond * 60;
-    var oneHour = oneMinute * 60;
-    var oneDay = oneHour * 24;
-
-    var seconds = Math.floor((millseconds % oneMinute) / oneSecond);
-    var minutes = Math.floor((millseconds % oneHour) / oneMinute);
-    var hours = Math.floor((millseconds % oneDay) / oneHour);
-    var days = Math.floor(millseconds / oneDay);
-
-    var timeString = '';
-    if (days !== 0) {
-      timeString += (days !== 1) ? (days + ' days ') : (days + ' day ');
+        }
     }
-    if (hours !== 0) {
-      timeString += (hours !== 1) ? (hours + ' hours ') : (hours + ' hour ');
-    }
-    if (minutes !== 0) {
-      timeString += (minutes !== 1) ? (minutes + ' minutes ') : (minutes + ' minute ');
-    }
-    /*if (seconds !== 0 || millseconds < 1000) {
-      timeString += (seconds !== 1) ? (seconds + ' seconds ') : (seconds + ' second ');
-    }*/
-
-    return timeString;
-  };
 });
+//NotePad Factory End===============================

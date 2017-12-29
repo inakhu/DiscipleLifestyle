@@ -27,7 +27,7 @@
 				<ion-content>
 					<div class="row">
 						<div class="col padding text-center">
-							<a class=" button icon ion-ios-calendar button-assertive" ion-datetime-picker date ng-model="row.appDate"> Pick a Date</a>
+							<a class=" button icon ion-ios-calendar button-calm" ion-datetime-picker date ng-model="row.appDate"> Pick a Date</a>
 						</div>
 					</div>
 					<div class="row">
@@ -36,7 +36,7 @@
 						</div>
 					</div>
 					<div ng-if="row.appDate" class="row">
-						<div class="col padding text-center">
+						<div class="col padding text-center ">
 							<a class="button ion-search button-calm" href="#/app/dashboard/{{row.appDate| date: 'yyyy-MM-dd'}}"> Preview </a>
 						</div>
 					</div>
@@ -49,17 +49,17 @@
 
 	</ion-pane>
 
-	<div class="tabs-striped tabs-color-light tabs-background-calm" style="padding: 0">
+	<div class="tabs-striped tabs-color-dark" style="padding: 0;">
 		<div class="tabs">
 			<a class="tab-item " ng-click="openPopover($event)">
-				<i class="icon ion-ios-calendar-outline" style="color: white"></i>
+				<i class="icon ion-ios-calendar-outline"></i>
 				Grossary
 			</a>
-			<a class="tab-item"  ng-click="decrease()" style="color: white">
+			<a class="tab-item"  ng-click="decrease()">
 				<i class="icon ion-minus-round"></i>
 				Decrease
 			</a>
-			<a class="tab-item" ng-click="increase()" style="color: white">
+			<a class="tab-item" ng-click="increase()" >
 				<i class="icon ion-plus-round"></i>
 				Increase
 			</a>

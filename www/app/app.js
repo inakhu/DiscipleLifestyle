@@ -1,97 +1,157 @@
 /*Ionic Starter App*/
 angular.module('HezecomApp',[
-      'ionic',
-      'ngCordova',
-      'jett.ionic.filter.bar',
-      'ionic-modal-select',
-      'ion-datetime-picker',
-      'ion-floating-menu',
-      'htsApp.controllers',
-      'htsApp.services',
-      'htsApp.constants'
-    ])
+    'ionic',
+    'ngStorage',
+    'jett.ionic.filter.bar',
+    'ionic-modal-select',
+    'ion-datetime-picker',
+    'ion-floating-menu',
+    'htsApp.controllers',
+    'htsApp.services',
+    'htsApp.constants'
+])
 
-.run(function($ionicPlatform , $rootScope, $location, HTSServices,$ionicPopup) {
-  $ionicPlatform.ready(function() {
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-    /*if(window.Connection) {
-      if(navigator.connection.type == Connection.NONE) {
-        $ionicPopup.confirm({
-          title: 'No Internet Connection',
-          content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
-        })
-            .then(function(result) {
-              if(!result) {
-                ionic.Platform.exitApp();
-              }
+    .run(function($ionicPlatform, $rootScope, $localStorage) {
+
+        if($localStorage.todos){
+            console.log('everything exists in localStorage');
+        }
+        else if(!$localStorage.todos){
+            console.log('there is not everything in localStorage we will create it');
+            $localStorage.todos = [];
+        }
+        else{
+            console.log('None of the above');
+        }
+        if($localStorage.notes){
+            console.log('exists notes in localStorage');
+        }
+        else if(!$localStorage.notes){
+            console.log('there are no notes in localStorage we will create it');
+            $localStorage.notes = [];
+        }
+        else{
+            console.log('None of the above');
+        }
+        $rootScope.getDateTime = function() {
+            var now     = new Date();
+            var year    = now.getFullYear();
+            var month   = now.getMonth()+1;
+            var day     = now.getDate();
+            var hour    = now.getHours();
+            var minute  = now.getMinutes();
+            var second  = now.getSeconds();
+            if(month.toString().length == 1) {var month = '0'+month;}
+            if(day.toString().length == 1) {var day = '0'+day;}
+            if(hour.toString().length == 1) {var hour = '0'+hour;}
+            if(minute.toString().length == 1) {var minute = '0'+minute;}
+            if(second.toString().length == 1) {var second = '0'+second;}
+            var ampm = hour >= 12 ? 'PM' : 'AM';
+            var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;
+            return dateTime;
+        };
+        $rootScope.randomId = function(){
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for( var i=0; i < 5; i++ )
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            return text;
+        }
+    })
+    .config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+
+            .state('app', {
+                url: '/app',
+                abstract: true,
+                cache: false,
+                templateUrl: 'app/templates/others/menu.html'
+            })
+
+            .state('app.dashboard', {
+                url: '/dashboard',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'app/templates/others/dashboard.html',
+                        controller: 'DashCtrl'
+                    }
+                }
+            })
+            .state('app.dashboard2', {
+                url: '/dashboard/:ndate',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'app/templates/others/dashboard.html',
+                        controller: 'DashCtrl'
+                    }
+                }
+            })
+            .state('app.aboutus', {
+                url: '/aboutus',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'app/templates/others/aboutus.html'
+                    }
+                }
+            })
+            .state('app.contactus', {
+                url: '/contactus',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'app/templates/others/contactus.html'
+                    }
+                }
+            })
+            //Build App
+            .state('tab', {
+                url: '/tab',
+                abstract: true,
+                templateUrl: 'tabs.html'
+            })
+            .state('tab.todos', {
+                url: '/todos',
+                views: {
+                    'tab-todos': {
+                        templateUrl: 'tab-todos.html',
+                        controller: 'TodosCtrl'
+                    }
+                }
+            })
+            .state('tab.todolist', {
+                url: '/todos/:todosId',
+                views: {
+                    'tab-todos': {
+                        templateUrl: 'todo-list.html',
+                        controller: 'TodoListCtrl'
+                    }
+                }
+            })
+            .state('tab.notes', {
+                url: '/notes',
+                views: {
+                    'tab-notes': {
+                        templateUrl: 'tab-notes.html',
+                        controller: 'NotesCtrl'
+                    }
+                }
+            })
+            .state('tab.notedetail', {
+                url: '/notes/:noteId',
+                views: {
+                    'tab-notes': {
+                        templateUrl: 'note-detail.html',
+                        controller: 'NoteDetailCtrl'
+                    }
+                }
+            })
+            .state('tab.options', {
+                url: '/options',
+                views: {
+                    'tab-options': {
+                        templateUrl: 'tab-options.html',
+                        controller: 'OptionsCtrl'
+                    }
+                }
             });
-      }
-    }*/
-  });
-
-  $rootScope.authStatus = false;
-  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
-    $rootScope.authStatus = toState.authStatus;
-    /*if ($rootScope.authStatus===true && HTSServices.UsersAuth()===null) {
-      $location.path('/login');
-    }*/
-  });
-})
-
-.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
-
-    .state('app', {
-    url: '/app',
-    abstract: true,
-    cache: false,
-    templateUrl: 'app/templates/others/menu.html',
-    controller: 'DashCtrl'
-  })
-
-  .state('app.dashboard', {
-    url: '/dashboard',
-    views: {
-      'menuContent': {
-        templateUrl: 'app/templates/others/dashboard.html',
-		controller: 'DashCtrl'
-      }
-     }
-  })
-  .state('app.dashboard2', {
-    url: '/dashboard/:ndate',
-    views: {
-      'menuContent': {
-        templateUrl: 'app/templates/others/dashboard.html',
-		controller: 'DashCtrl'
-      }
-     }
-  })
-  .state('app.dashboard3/:lang', {
-    url: '/dashboard',
-    views: {
-      'menuContent': {
-        templateUrl: 'app/templates/others/dashboard.html',
-		controller: 'DashCtrl'
-      }
-     }
-  })
-  .state('app.dashboard4/:lang/:nDate', {
-    url: '/dashboard',
-    views: {
-      'menuContent': {
-        templateUrl: 'app/templates/others/dashboard.html',
-		controller: 'DashCtrl'
-      }
-     }
-  })
-
-  $urlRouterProvider.otherwise('/app/dashboard');
-});
+        $urlRouterProvider.otherwise('/app/dashboard');
+    });
