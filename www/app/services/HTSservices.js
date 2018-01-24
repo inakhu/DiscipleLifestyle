@@ -124,5 +124,52 @@ app.factory('Notes', function($localStorage, $rootScope, $stateParams) {
 
         }
     }
-});
+})
+// create a new factory
+    .factory ('StorageService', function ($localStorage) {
+
+        $localStorage = $localStorage.$default({
+            bookmarks: []
+        });
+
+        var _getAll = function () {
+            return $localStorage.bookmarks;
+        };
+
+        var _add = function (bookmark) {
+            $localStorage.bookmarks.push(bookmark);
+        };
+
+        var _remove = function (bookmark) {
+            $localStorage.bookmarks.splice($localStorage.bookmarks.indexOf(bookmark), 1);
+        };
+
+        return {
+            getAll: _getAll,
+            add: _add,
+            remove: _remove
+        };
+    })
+
+    .factory('VideoControl', function ($rootScope, $document) {
+        var _events = {
+            onPause: 'onPause',
+            onResume: 'onResume'
+        };
+
+        $document.bind('resume', function () {
+            _publish(_events.onResume, null);
+        });
+
+        $document.bind('pause', function () {
+            _publish(_events.onPause, null);
+        });
+
+        function _publish(eventName, data) {
+            $rootScope.$broadcast(eventName, data)
+        }
+        return {
+            events: _events
+        }
+    });
 //NotePad Factory End===============================
